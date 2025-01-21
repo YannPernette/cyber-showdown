@@ -1,0 +1,80 @@
+// Normalize
+@use "foundations/normalize";
+
+// Foundations
+@use "foundations/functions";
+@use "foundations/variables";
+@use "foundations/mixins";
+
+
+// Main styles
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: $regular;
+    overflow-x: hidden;
+    background-color: $lightAccent;
+    color: $dark;
+
+    * {
+        margin-block-start: 0;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.link {
+    text-decoration: none;
+    color: $secondary;
+    position: relative;
+
+    &::after {
+        content: "";
+        width: 0;
+        height: 1px;
+        background-color: $secondary;
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        transition: width .3s ease-in-out;
+    }
+
+    &:hover::after {
+        width: 100%;
+    }
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+h1 {
+    font-size: $title1;
+    font-family: $ubuntu;
+}
+
+h2 {
+    font-size: $title2;
+    font-family: $ubuntu;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+// MARGES PAGES
+
+.mx-page {
+    margin-inline: 7%;
+}
+
+.px-page {
+    padding-inline: 7%;
+}

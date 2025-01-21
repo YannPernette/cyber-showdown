@@ -1,0 +1,32 @@
+@use "functions" as *;
+
+// Colors
+$primary: #425C59;
+$lightAccent: #E2ECEB;
+$secondary: #D6A218;
+$darkAccent: #212B43;
+$light: #F8F8F8;
+$dark: #090A0A;
+$gray100: #E3E5E5;
+$gray400: #CDCFD0;
+$gray800: #979C9E;
+$danger: #AF1200;
+$dangerHover: #7c0c00;
+
+// Gradients
+$gradientHero: linear-gradient(0deg, rgba(214,162,24,1) 10%, rgba(214,162,24,0) 100%);
+
+// Font-sizes
+$title1: remTo(40px);
+$title2: remTo(30px);
+$title3: remTo(20px);
+$largeTxt: remTo(18px);
+$regular: remTo(16px);
+$smallTxt: remTo(14px);
+$tiny: remTo(12px);
+
+// Font families (Ubuntu + Open Sans)
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+$ubuntu: 'Ubuntu', sans-serif;
+$openSans: 'Open Sans', sans-serif;

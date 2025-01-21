@@ -4,6 +4,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/eslint'],
 
+  components: [
+    { path: "~/components", pathPrefix: false },
+    { path: "~/components/icon", pathPrefix: false },
+  ],
+
+  css: ["@/assets/scss/main.scss"],
+
   vite: {
     css: {
       preprocessorOptions: {

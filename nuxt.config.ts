@@ -4,6 +4,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/eslint'],
 
+  runtimeConfig: {
+    public: {
+      apiTrackingBaseUrl: process.env.NUXT_PUBLIC_API_TRACKING_BASE_URL || '',
+    },
+  },
+
   components: [
     { path: "~/components", pathPrefix: false },
     { path: "~/components/icon", pathPrefix: false },

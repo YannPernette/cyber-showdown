@@ -6,6 +6,8 @@
 <template>
 <div class="mx-page">
     <h1>Cyber Showdown</h1>
+
+    <RegisterForm />
 </div>
 </template>
 

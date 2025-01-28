@@ -8,6 +8,7 @@
     <h1>Cyber Showdown</h1>
 
     <RegisterForm />
+    <CreateSession />
 </div>
 </template>
 

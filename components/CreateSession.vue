@@ -1,6 +1,9 @@
-<script setup lang='ts'>
+<script setup lang="ts">
+
+
 const router = useRouter()
 
+// Création de session
 async function createSession(event: Event) {
     event.preventDefault()
 
@@ -10,13 +13,13 @@ async function createSession(event: Event) {
     })
 
     if (response && response.sessionId) {
-      // Redirection vers la page de session avec l'ID unique
-      await router.push(`/session/${response.sessionId}`);
+        await router.push(`/session/${response.sessionId}`)
     } else {
-      console.error('Erreur: ID de session manquant dans la réponse');
+        console.error('Erreur: ID de session manquant dans la réponse')
     }
 }
 
+// Rejoindre une session
 async function joinSession(event: Event) {
     event.preventDefault()
 
@@ -26,10 +29,9 @@ async function joinSession(event: Event) {
     })
 
     if (response && response.sessionId) {
-      // Redirection vers la page de session avec l'ID unique
-      await router.push(`/session/${response.sessionId}`);
+        await router.push(`/session/${response.sessionId}`)
     } else {
-      console.error('Erreur: ID de session manquant dans la réponse');
+        console.error('Erreur: ID de session manquant dans la réponse')
     }
 }
 </script>

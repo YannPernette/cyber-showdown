@@ -13,7 +13,7 @@ async function createSession(event: Event) {
     })
 
     if (response && response.sessionId) {
-        await router.push(`/session/${response.sessionId}`)
+        await router.push(`/session/${response.sessionId}/lobby`)
     } else {
         console.error('Erreur: ID de session manquant dans la réponse')
     }
@@ -29,7 +29,7 @@ async function joinSession(event: Event) {
     })
 
     if (response && response.sessionId) {
-        await router.push(`/session/${response.sessionId}`)
+        await router.push(`/session/${response.sessionId}/lobby`)
     } else {
         console.error('Erreur: ID de session manquant dans la réponse')
     }

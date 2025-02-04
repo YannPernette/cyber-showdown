@@ -4,10 +4,8 @@ import { io } from 'socket.io-client'
 const { id } = useRoute().params;
 const config = useRuntimeConfig().public;
 
-const { data } = await useAsyncData('session', async () =>
+const { data, refresh } = await useAsyncData('get-session', async () =>
     await useAPI(`/session/${id}`, {
-        method: 'GET'
-    })
 )
 
 const route = useRoute()
@@ -21,6 +19,12 @@ onMounted(() => {
     if (route.params.id) {
         sessionId.value = route.params.id as string
         socket.value.emit('join-session', sessionId.value) // Indique que l'utilisateur rejoint cette session
+
+        // 🔄 Écouter l'événement et rafraîchir la session
+        socket.value.on("session-updated", () => {
+            console.log("Un joueur a rejoint, rafraîchissement des données...")
+            refresh()
+        })
 
         // Envoyer des "pings" toutes les 30 secondes pour indiquer une activité
         setInterval(() => {
@@ -60,21 +64,46 @@ onBeforeRouteLeave((to, from, next) => {
 
 
 <template>
-    <div>
-        <h1>Ca joue ou quoi la team</h1>
+    <div class="lobby">
+        <h1>Lobby ({{ data.id }})</h1>
 
         <h2 v-if="data.status === 'closed'">Session fermée</h2>
 
-        <div>
-            <p>Utilisateur 1 : {{ data.user1_id }}</p>
-            <p>Utilisateur 2 : {{ data.user2_id }}</p>
+        <div v-if="data.user2_id" class="lobby__users">
+            <UserCard v-bind="data.user1" />
+            <span class="lobby__vs">VS</span>
+            <UserCard v-bind="data.user2" />
         </div>
 
-        <pre v-if="data">
-        {{ data }}
-    </pre>
+        <div v-else>
+            <UserCard v-bind="data.user1" />
+            <p>En attente d'un autre joueur...</p>
+        </div>
+
+        <Button v-if="data.user2_id">Lancer la partie !</Button>
     </div>
 </template>
 
 
-<style lang='scss'></style>
+<style lang='scss'>
+.lobby {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 80vh;
+    margin-block: 10vh;
+
+    &__users {
+        display: flex;
+        align-items: center;
+        gap: 5rem;
+    }
+
+    &__vs {
+        font-family: $pressStart;
+        font-size: 2.5rem;
+        letter-spacing: 3px;
+    }
+}
+</style>

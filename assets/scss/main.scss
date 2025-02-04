@@ -10,11 +10,11 @@
 // Main styles
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    // font-family: 'Open Sans', sans-serif;
     font-size: $regular;
     overflow-x: hidden;
-    background-color: $lightAccent;
-    color: $dark;
+    background-color: $dark;
+    color: $light;
 
     * {
         margin-block-start: 0;
@@ -55,12 +55,13 @@ ul {
 
 h1 {
     font-size: $title1;
-    font-family: $ubuntu;
+    font-family: $audioWide;
 }
 
 h2 {
     font-size: $title2;
-    font-family: $ubuntu;
+    font-family: $audioWide;
+    font-weight: 400;
 }
 
 img {

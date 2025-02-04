@@ -4,6 +4,7 @@ const select = ref(0)
 
 
 <template>
+    <div class="grid">
 <div class="mx-page">
     <h1>Cyber Showdown</h1>
 
@@ -17,6 +18,7 @@ const select = ref(0)
     </div>
 
     <CreateSession />
+</div>
 </div>
 </template>
 

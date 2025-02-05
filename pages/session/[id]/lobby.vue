@@ -6,6 +6,8 @@ const config = useRuntimeConfig().public;
 
 const { data, refresh } = await useAsyncData('get-session', async () =>
     await useAPI(`/session/${id}`, {
+        method: 'GET'
+    })
 )
 
 const route = useRoute()

@@ -11,7 +11,7 @@ const envFile =
 dotenv.config({ path: resolve(process.cwd(), envFile) });
 
 export default defineNuxtConfig({
-  compatibilityDate: "2024-11-01",
+  compatibilityDate: "2025-02-10",
   devtools: { enabled: true },
   modules: ["@nuxt/eslint"],
 
@@ -40,6 +40,13 @@ export default defineNuxtConfig({
           `,
         },
       },
+    },
+  },
+
+  nitro: {
+    prerender: {
+      crawlLinks: true, // Active le scan des liens pour trouver les pages à générer
+      routes: ["/200.html"], // Ajoute 200.html comme page statique
     },
   },
 });

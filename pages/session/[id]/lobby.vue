@@ -11,15 +11,21 @@ const { data, refresh } = await useAsyncData('get-session', async () =>
 )
 
 const route = useRoute()
+const router = useRouter()
+
 const socket = ref()
+socket.value = io(config.apiTrackingBaseUrl)
 const sessionId = ref<string | null>(null)
+
+sessionId.value = route.params.id as string
+
+const goToGame = () => {
+    socket.value.emit('all-there', sessionId.value)
+}
 
 // Connexion Socket.IO au chargement du composant
 onMounted(() => {
-    socket.value = io(config.apiTrackingBaseUrl)
-
     if (route.params.id) {
-        sessionId.value = route.params.id as string
         socket.value.emit('join-session', sessionId.value) // Indique que l'utilisateur rejoint cette session
 
         // 🔄 Écouter l'événement et rafraîchir la session
@@ -32,6 +38,10 @@ onMounted(() => {
         setInterval(() => {
             socket.value.emit('activity', sessionId.value)
         }, 30000)
+
+        socket.value.on("go-game", () => {
+            router.push(`/session/${sessionId.value}/game`)
+        })
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload)
@@ -42,7 +52,6 @@ onBeforeUnmount(() => {
     if (sessionId.value) {
         socket.value.emit('leave-session', sessionId.value)
     }
-    socket.value.disconnect() // Déconnexion propre du socket
 
     window.removeEventListener('beforeunload', handleBeforeUnload)
 })
@@ -55,8 +64,17 @@ const handleBeforeUnload = (event: BeforeUnloadEvent) => {
 
 // Alerte lorsqu'on essaie de quitter avec la flèche arrière
 onBeforeRouteLeave((to, from, next) => {
+    // Si l'utilisateur va vers "/game", on ne déclenche pas l'événement leave-session
+    if (to.path === `/session/${sessionId.value}/game`) {
+        next()
+        return
+    }
+
     const confirmation = window.confirm('Êtes-vous sûr de vouloir quitter votre partie ? Elle sera définitivement fermée.')
     if (confirmation) {
+        if (sessionId.value) {
+            socket.value.emit('leave-session', sessionId.value)
+        }
         next()
     } else {
         next(false)
@@ -82,7 +100,8 @@ onBeforeRouteLeave((to, from, next) => {
             <p>En attente d'un autre joueur...</p>
         </div>
 
-        <Button v-if="data.user2_id">Lancer la partie !</Button>
+        <Button v-if="data.user2_id" @click="goToGame()">Lancer la partie !</Button>
+        <!-- <NuxtLink :to="'game'">game</NuxtLink> -->
     </div>
 </template>
 

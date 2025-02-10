@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 defineProps<{
-    profile_picture: string,
-    username: string
+    profile_picture?: string,
+    username?: string
 }>();
 </script>
 

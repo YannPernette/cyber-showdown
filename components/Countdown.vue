@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { io } from "socket.io-client";
-import { useRoute } from "vue-router";
 
 const props = defineProps<{
     id: string
@@ -8,7 +7,6 @@ const props = defineProps<{
 
 const socket = ref();
 const config = useRuntimeConfig().public;
-const route = useRoute();
 const countdownText = ref("En attente de l'autre joueur...");
 const showCountdown = ref(true);
 const numbers = ["Préparez-vous", "GO!"];

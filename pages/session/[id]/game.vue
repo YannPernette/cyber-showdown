@@ -1,27 +1,82 @@
 <script setup lang='ts'>
-const { id } = useRoute().params;
+import { io } from 'socket.io-client'
+
+const socket = ref()
 const config = useRuntimeConfig().public;
 
-const { data, refresh } = await useAsyncData('get-session', async () =>
+const router = useRouter()
+const { id } = useRoute().params;
+
+const { data, refresh } = await useAsyncData('get-session-game', async () =>
     await useAPI(`/session/${id}`, {
         method: 'GET'
     })
 )
+
+if (data.value.user1_lives === 0 || data.value.user2_lives === 0) {
+    router.push(`/session/${id}/recap`)
+}
+
+onMounted(() => {
+    socket.value = io(config.apiTrackingBaseUrl)
+
+    // 🔄 Écouter l'événement et rafraîchir les données
+    socket.value.on("life-removed", () => {
+        refresh();
+        console.log('xqshjq')
+    })
+})
 </script>
 
 
 <template>
     <div class="game">
         <div>
-            <RiveComponent />
-             <p>le jeu</p>
+            <div class="game__start">
+                <Countdown :id="id.toString()" />
+            </div>
+            <RiveComponent :id="id.toString()" />
         </div>
 
         <div class="game__scoreboard">
+
+            <div class="game__lives">
+                <div>
+                    <HeartFull v-if="data.user1_lives > 0" class="game__heart" />
+                    <Heart v-else class="game__heart" />
+                </div>
+                <div>
+                    <HeartFull v-if="data.user1_lives > 1" class="game__heart" />
+                    <Heart v-else class="game__heart" />
+                </div>
+                <div>
+                    <HeartFull v-if="data.user1_lives > 2" class="game__heart" />
+                    <Heart v-else class="game__heart" />
+                </div>
+            </div>
+
+            <p>{{ data.user1_lives }} vies restantes</p>
             <UserCard v-bind="data.user1" />
             <span class="lobby__vs">VS</span>
+
+            <div class="game__lives">
+                <div>
+                    <HeartFull v-if="data.user2_lives > 0" class="game__heart" />
+                    <Heart v-else class="game__heart" />
+                </div>
+                <div>
+                    <HeartFull v-if="data.user2_lives > 1" class="game__heart" />
+                    <Heart v-else class="game__heart" />
+                </div>
+                <div>
+                    <HeartFull v-if="data.user2_lives > 2" class="game__heart" />
+                    <Heart v-else class="game__heart" />
+                </div>
+            </div>
             <UserCard v-bind="data.user2" />
         </div>
+
+        {{ data }}
     </div>
 </template>
 
@@ -32,6 +87,25 @@ const { data, refresh } = await useAsyncData('get-session', async () =>
     height: 100vh;
     display: grid;
     grid-template-columns: 4fr 1fr;
+
+    &__start {
+        width: -webkit-fill-available;
+        height: 100%;
+        position: absolute;
+        pointer-events: none;
+        display: grid;
+        grid-template-columns: 4fr 1fr;
+    }
+
+    &__lives {
+        display: flex;
+        gap: 1rem;
+    }
+
+    &__heart {
+        width: 3rem;
+        height: 3rem;
+    }
 
     &__scoreboard {
         background-color: $tertiary;

@@ -1,95 +1,119 @@
 <script setup lang='ts'>
 import { Rive } from '@rive-app/canvas';
+import { io } from 'socket.io-client'
+
+const props = defineProps<{ id: string }>();
+
+const socket = ref();
+const config = useRuntimeConfig().public;
 
 const { data } = await useAsyncData('random-game', async () =>
-  await useAPI(`/random-game`, {
-    method: 'GET'
-  })
-)
+  await useAPI(`/random-game`, { method: 'GET' })
+);
 
 const riveCanvasGame = ref();
 const riveCanvasTime = ref();
-let riveInstanceGame = null;
-let riveInstanceTime = null;
-const gameWinConditionMet = ref(false);  // Suivi si la condition de victoire est atteinte
-const timeFinished = ref(false);          // Suivi si le temps est écoulé
+const result = ref('');
+let riveInstanceGame: Rive | null = null;
+let riveInstanceTime: Rive | null = null;
+const gameWinConditionMet = ref(false);
+const timeFinished = ref(false);
 
 onMounted(() => {
+  socket.value = io(config.apiTrackingBaseUrl);
+
   if (!riveCanvasGame.value || !riveCanvasTime.value || !data.value?.name || !data.value?.time || !data.value?.win_condition) {
     console.error('Canvas ou données du jeu manquants');
     return;
   }
 
-  // Instance de Rive pour le jeu
+  // Rejoindre la session
+  socket.value.emit("join-session", props.id);
+
+  setTimeout(() => {
+    socket.value.emit("player-ready", props.id);
+  }, 1500);
+
+  socket.value.on("game-started", () => {
+    startAnimations();
+  });
+
+  // Initialisation de Rive pour le jeu
   riveInstanceGame = new Rive({
     src: `/games/${data.value.name}.riv`,
     canvas: riveCanvasGame.value,
-    autoplay: false, // Ne commence pas l'animation immédiatement
+    autoplay: false,
     stateMachines: "State Machine 1",
     onLoad: () => {
-      riveInstanceGame.resizeDrawingSurfaceToCanvas();
+      if (riveInstanceGame) {
+        riveInstanceGame.resizeDrawingSurfaceToCanvas();
+      }
     },
     onStateChange: (event) => {
       const stateData = event?.data;
-      // Vérification de la condition de victoire dans GameInstance
       if (Array.isArray(stateData) && stateData.includes(data.value.win_condition)) {
-        gameWinConditionMet.value = true; // Condition de victoire atteinte
-        console.log("C'est gagné !");
+        gameWinConditionMet.value = true;
       }
     },
   });
 
-  // Instance de Rive pour le temps
+  // Initialisation de Rive pour le temps
   riveInstanceTime = new Rive({
     src: `/games/time/${data.value.time}.riv`,
     canvas: riveCanvasTime.value,
-    autoplay: false, // Ne commence pas l'animation immédiatement
+    autoplay: false,
     stateMachines: "State Machine 1",
     onLoad: () => {
-      riveInstanceTime.resizeDrawingSurfaceToCanvas();
+      if (riveInstanceTime) {
+        riveInstanceTime.resizeDrawingSurfaceToCanvas();
+      }
     },
     onStateChange: (event) => {
       const stateData = event?.data;
-      // Vérification de l'état "Finished" du temps dans TimeInstance
       if (Array.isArray(stateData) && stateData.includes('Finished')) {
-        timeFinished.value = true;  // Temps écoulé
-        if (!gameWinConditionMet.value) { // Affiche "Temps écoulé" si la condition de victoire n'est pas remplie
+        timeFinished.value = true;
+        if (!gameWinConditionMet.value) {
           console.log("Temps écoulé");
+          socket.value.emit('decrease-lives', props.id);
+          useAPI(`/session/${props.id}/decrease-lives`, { method: 'POST', body: {} });
+          result.value = 'loose';
+          setTimeout(() => location.reload(), 2000);
         }
       }
     },
   });
 });
 
-// Fonction pour démarrer toutes les animations
+// Fonction pour démarrer les animations
 const startAnimations = () => {
   if (riveInstanceGame) {
-    riveInstanceGame.play();  // Démarre l'animation pour le jeu
-    console.log("Animation du jeu lancée !");
+    riveInstanceGame.play();
   }
-
   if (riveInstanceTime) {
-    riveInstanceTime.play();  // Démarre l'animation pour le temps
-    console.log("Animation du temps lancée !");
+    riveInstanceTime.play();
   }
 };
 
-// Vérification combinée : Si les deux conditions sont remplies
+// Vérification combinée pour recharger la page après victoire
 watch([gameWinConditionMet, timeFinished], () => {
   if (gameWinConditionMet.value && timeFinished.value) {
     console.log("Temps écoulé, GAGNÉ");
+    result.value = 'win';
+    setTimeout(() => location.reload(), 2000);
   }
 });
 </script>
 
+
 <template>
   <div>
+    <div v-if="result === 'loose'">JEU PERDU</div>
+    <div v-if="result === 'win'">JEU GAGNE</div>
     <canvas ref="riveCanvasGame" />
     <canvas ref="riveCanvasTime" />
-    <button @click="startAnimations">Démarrer les animations</button>
-    {{ data }}
   </div>
 </template>
+
 
 <style>
 canvas {

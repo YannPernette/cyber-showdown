@@ -40,7 +40,7 @@ const handleInput = (event: Event) => {
     padding: remTo(10px);
     border: 2px solid $primary;
     border-radius: remTo(5px);
-    width: -webkit-fill-available;
+    width: 50%;
 
     &:focus-visible {
         outline: 3px solid $secondary;

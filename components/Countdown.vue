@@ -45,9 +45,13 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .countdown {
-    font-size: 5rem;
-    font-weight: bold;
+    font-size: 3rem;
+    // font-weight: bold;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $pressStart;
 }
 
 @keyframes fadeInOut {

@@ -1,13 +1,14 @@
 <script setup lang='ts'>
 defineProps<{
     profile_picture?: string,
-    username?: string
+    username?: string,
+    inGame?: boolean
 }>();
 </script>
 
 
 <template>
-    <div class="userCard">
+    <div class="userCard" :class="{ 'in-game': inGame }">
         <div class="userCard__container">
             <img v-if="profile_picture" class="userCard__picture" :src="profile_picture" alt="">
             <DefaultUser v-else class="userCard__picture" />
@@ -53,6 +54,19 @@ defineProps<{
     &__name {
         font-family: $genos;
         font-size: 2rem;
+        margin: 0;
+    }
+
+    &.in-game {
+        .userCard__container::after {
+            animation: none;
+            clip-path: none;
+        }
+
+        .userCard__picture {
+            width: 7rem;
+            height: 7rem;
+        }
     }
 }
 

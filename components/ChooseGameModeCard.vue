@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import PadlockIcon from "@/components/icon/PadlockIcon.vue";
 import SpeedIcon from "@/components/icon/SpeedIcon.vue";
+
 defineProps<{
     type: string,
 }>();

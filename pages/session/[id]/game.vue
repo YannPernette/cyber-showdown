@@ -40,43 +40,48 @@ onMounted(() => {
 
         <div class="game__scoreboard">
 
-            <div class="game__lives">
-                <div>
-                    <HeartFull v-if="data.user1_lives > 0" class="game__heart" />
-                    <Heart v-else class="game__heart" />
+            <div class="game__groupUser">
+                <div class="game__lives">
+                    <div>
+                        <HeartFull v-if="data.user1_lives > 0" class="game__heart" />
+                        <Heart v-else class="game__heart" />
+                    </div>
+                    <div>
+                        <HeartFull v-if="data.user1_lives > 1" class="game__heart" />
+                        <Heart v-else class="game__heart" />
+                    </div>
+                    <div>
+                        <HeartFull v-if="data.user1_lives > 2" class="game__heart" />
+                        <Heart v-else class="game__heart" />
+                    </div>
                 </div>
-                <div>
-                    <HeartFull v-if="data.user1_lives > 1" class="game__heart" />
-                    <Heart v-else class="game__heart" />
-                </div>
-                <div>
-                    <HeartFull v-if="data.user1_lives > 2" class="game__heart" />
-                    <Heart v-else class="game__heart" />
-                </div>
+
+                <UserCard v-bind="data.user1" in-game />
             </div>
 
-            <p>{{ data.user1_lives }} vies restantes</p>
-            <UserCard v-bind="data.user1" />
-            <span class="lobby__vs">VS</span>
+            <span class="game__vs">VS</span>
 
-            <div class="game__lives">
-                <div>
-                    <HeartFull v-if="data.user2_lives > 0" class="game__heart" />
-                    <Heart v-else class="game__heart" />
+            <div class="game__groupUser">
+                <div class="game__lives">
+                    <div>
+                        <HeartFull v-if="data.user2_lives > 0" class="game__heart" />
+                        <Heart v-else class="game__heart" />
+                    </div>
+                    <div>
+                        <HeartFull v-if="data.user2_lives > 1" class="game__heart" />
+                        <Heart v-else class="game__heart" />
+                    </div>
+                    <div>
+                        <HeartFull v-if="data.user2_lives > 2" class="game__heart" />
+                        <Heart v-else class="game__heart" />
+                    </div>
                 </div>
-                <div>
-                    <HeartFull v-if="data.user2_lives > 1" class="game__heart" />
-                    <Heart v-else class="game__heart" />
-                </div>
-                <div>
-                    <HeartFull v-if="data.user2_lives > 2" class="game__heart" />
-                    <Heart v-else class="game__heart" />
-                </div>
+                
+                <UserCard v-bind="data.user2" in-game />
             </div>
-            <UserCard v-bind="data.user2" />
         </div>
 
-        {{ data }}
+        <!-- {{ data }} -->
     </div>
 </template>
 
@@ -90,11 +95,26 @@ onMounted(() => {
 
     &__start {
         width: -webkit-fill-available;
-        height: 100%;
+        height: calc(100% - 5px);
         position: absolute;
         pointer-events: none;
         display: grid;
         grid-template-columns: 4fr 1fr;
+    }
+
+    &__scoreboard {
+        background-color: $tertiary;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        border-left: 3px solid $secondary;
+    }
+
+    &__groupUser {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
 
     &__lives {
@@ -107,8 +127,10 @@ onMounted(() => {
         height: 3rem;
     }
 
-    &__scoreboard {
-        background-color: $tertiary;
+    &__vs {
+        font-family: $pressStart;
+        font-size: 2.5rem;
+        letter-spacing: 3px;
     }
 }
 </style>

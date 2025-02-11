@@ -91,8 +91,8 @@ const handleFileUpload = (event: Event): void => {
 
 <style lang='scss'>
 .register {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
     justify-content: center;
 }

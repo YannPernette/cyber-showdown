@@ -25,7 +25,7 @@ const updateCountdown = () => {
     setTimeout(() => {
         socket.value = io(config.apiTrackingBaseUrl);
         socket.value.emit("start-game", props.id);
-    }, 1500);
+    }, 2000);
 };
 
 onMounted(() => {

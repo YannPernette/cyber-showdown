@@ -88,7 +88,7 @@ $border-color: rgba(255, 255, 255, 0.2); // Couleur de la bordure des carrés
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(rgba(255, 255, 255, 0.062), rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0.062));
+        background: linear-gradient(rgba(255, 255, 255, 0.062), rgba(88, 103, 243, 0.474), rgba(255, 255, 255, 0.062));
         animation: animate 5s linear infinite;
         z-index: -1;
     }

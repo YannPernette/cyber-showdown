@@ -97,7 +97,7 @@ onMounted(() => {
           socket.value.emit('decrease-lives', props.id);
           useAPI(`/session/${props.id}/decrease-lives`, { method: 'POST', body: {} });
           result.value = 'loose';
-          // setTimeout(() => location.reload(), 2000);
+          setTimeout(() => location.reload(), 2000);
         }
       }
     }
@@ -151,7 +151,7 @@ canvas {
 
 .level-result {
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   position: absolute;
   top: 0;
   display: grid;

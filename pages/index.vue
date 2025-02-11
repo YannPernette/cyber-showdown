@@ -104,6 +104,9 @@ $border-color: rgba(255, 255, 255, 0.2); // Couleur de la bordure des carrés
 
 .home {
     position: absolute;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
 
     &__layout {
         display: grid;

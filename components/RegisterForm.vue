@@ -70,42 +70,39 @@ const handleFileUpload = (event: Event): void => {
 
 <template>
     <div>
-    <form class="register" @submit="createAccount">
-        <div>
-            <label for="email">Email</label>
-            <input id="email" v-model="email" type="email" required>
-        </div>
+        <form class="register" @submit="createAccount">
+            <InputGroup id="email" v-model="email" placeholder="test@mail.com" type="email" required>
+                Email
+            </InputGroup>
 
-        <div>
-            <label for="username">Nom d'utilisateur</label>
-            <input id="username" v-model="username" type="text" required>
-        </div>
+            <InputGroup id="username" v-model="username" placeholder="Joueur 1" type="username" required>
+                Nom d'utilisateur
+            </InputGroup>
 
-        <div>
-            <label for="password">Mot de passe</label>
-            <input id="password" v-model="password" type="password" required>
-        </div>
+            <InputGroup id="password" v-model="password" placeholder="***" type="password" required>
+                Mot de passe
+            </InputGroup>
 
-        <div>
-            <label for="profile_picture">Photo de profil</label>
-            <input id="profile_picture" accept="image/png, image/jpeg" type="file" @change="handleFileUpload">
-            <div v-if="preview">
-                <p>Aperçu de l'image :</p>
-                <img :src="preview" alt="Aperçu" style="max-width: 200px;">
+            <div>
+                <label for="profile_picture">Photo de profil</label>
+                <input id="profile_picture" accept="image/png, image/jpeg" type="file" @change="handleFileUpload">
+                <div v-if="preview">
+                    <p>Aperçu de l'image :</p>
+                    <img :src="preview" alt="Aperçu" style="max-width: 200px;">
+                </div>
             </div>
-        </div>
 
-        <div>
-            <button type="submit">Créér mon compte</button>
-        </div>
-    </form>
+            <div>
+                <button type="submit">Créér mon compte</button>
+            </div>
+        </form>
 
-    <div v-if="data" style="margin-top: 50px;">
-        <h3>Infos utilisateur</h3>
-        <p>{{ data.email }}</p>
-        <p>{{ data.username }}</p>
+        <div v-if="data" style="margin-top: 50px;">
+            <h3>Infos utilisateur</h3>
+            <p>{{ data.email }}</p>
+            <p>{{ data.username }}</p>
+        </div>
     </div>
-</div>
 </template>
 
 

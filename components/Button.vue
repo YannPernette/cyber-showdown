@@ -15,25 +15,26 @@ defineProps<{
 
 <style lang='scss'>
 .button {
-    background-color: $secondary;
-    color: $light;
-    border: 1px solid $secondary;
+    background-color: $primary;
+    color: $black;
+    border: 1px solid $primary;
     cursor: pointer;
     text-transform: uppercase;
-    padding: 2rem 2rem;
+    padding: 0.8rem 1rem;
     border-radius: 0.5rem;
-    font-size: $largeTxt;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.7rem;
-    font-family: $audioWide;
+    font-family: $genos;
     transition: all .3s ease;
 
     &:hover {
-        background-color: $primary;
-        color: $black;
+        background-color: $secondary;
+        border-color: $secondary;
+        color: $light;
     }
 }
 </style>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const squares = ref<number>(0);
 const squareSize = 30; // Taille des carrés en pixels
 
@@ -9,11 +8,39 @@ const calculateGrid = () => {
     squares.value = cols * rows;
 };
 
-const isVisible = ref(true); // État pour gérer la visibilité du composant
+const router = useRouter()
 
-const hideCard = () => {
-  isVisible.value = false; // Déclenche l'animation de réduction
-};
+// Création de session
+async function createSession(event: Event) {
+    event.preventDefault()
+
+    const response = await useAPI('/session/create', {
+        method: 'POST',
+        body: {}
+    })
+
+    if (response && response.sessionId) {
+        await router.push(`/session/${response.sessionId}/lobby`)
+    } else {
+        console.error('Erreur: ID de session manquant dans la réponse')
+    }
+}
+
+// Rejoindre une session
+async function joinSession(event: Event) {
+    event.preventDefault()
+
+    const response = await useAPI('/session/join', {
+        method: 'POST',
+        body: {}
+    })
+
+    if (response && response.sessionId) {
+        await router.push(`/session/${response.sessionId}/lobby`)
+    } else {
+        console.error('Erreur: ID de session manquant dans la réponse')
+    }
+}
 
 // Calcul initial
 onMounted(() => {
@@ -36,8 +63,8 @@ onBeforeUnmount(() => {
         <h1 class="choice__h1">Cyber Showdown</h1>
 
         <div class="cards">
-            <ChooseGameModeCard type="rapide" :class="{ 'hide': !isVisible }" @click="hideCard" />
-            <ChooseGameModeCard type="privée" :class="{ 'hide': !isVisible }" @click="hideCard" />
+            <ChooseGameModeCard type="Créer" @click="createSession" />
+            <ChooseGameModeCard type="Rejoindre" @click="joinSession" />
         </div>
     </div>
 </template>
@@ -106,10 +133,5 @@ $border-color: rgba(255, 255, 255, 0.2); // Couleur de la bordure des carrés
     display: flex;
     gap: 7rem;
     pointer-events: none;
-}
-
-.chooseCard.hide {
-  transform: scale(0);
-  opacity: 0;
 }
 </style>

@@ -8,22 +8,19 @@ defineProps<{
 
 
 <template>
-    <div class="chooseCard" :class="{ '-left': type === 'rapide', '-right': type === 'privée' }">
-        <component 
-      :is="type === 'privée' ? PadlockIcon : SpeedIcon" 
-      class="chooseCard__icon" 
-    />
-        <h2 class="chooseCard__text"><span>Partie</span><span>{{type}}</span></h2>
+    <div class="chooseCard" :class="{ '-left': type === 'Créer', '-right': type === 'Rejoindre' }">
+        <component :is="type === 'Créer' ? PadlockIcon : SpeedIcon" class="chooseCard__icon" />
+        <h2 class="chooseCard__text"><span>{{ type }}</span><span>une partie</span></h2>
     </div>
 </template>
 
 
 <style lang='scss'>
 .chooseCard {
-    background: #10121d;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(2.5px);
-    -webkit-backdrop-filter: blur(2.5px);
+    background: rgba(6, 0, 0, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 2px solid $primary;
     color: $primary;
     padding: 1rem 2rem;

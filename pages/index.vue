@@ -1,6 +1,4 @@
 <script setup lang='ts'>
-const select = ref(0)
-
 const squares = ref<number>(0);
 const squareSize = 30; // Taille des carrés en pixels
 
@@ -29,21 +27,15 @@ onBeforeUnmount(() => {
             <span v-for="n in squares" :key="n" class="square" />
         </div>
 
-        <!-- <div style="margin-bottom: 30px;">
-                <button @click="select = 0">Créer un compte</button>
-                <button @click="select = 1">Se connecter</button>
-            </div> -->
-
         <div class="home">
             <div>
                 <h1>Cyber Showdown</h1>
             </div>
 
             <div class="home__layout">
-                <div v-if="select === 0">
-                    <RegisterForm />
-                </div>
-                <div>test</div>
+                <AuthenticateForm />
+
+                <div class="home__test">test</div>
             </div>
 
         </div>
@@ -104,10 +96,23 @@ $border-color: rgba(255, 255, 255, 0.2); // Couleur de la bordure des carrés
 
 .home {
     position: absolute;
+    width: 100vw;
+    height: 100vh;
+    // pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     &__layout {
         display: grid;
         grid-template-columns: 2fr 1fr;
+        gap: 3rem;
+        width: 90%;
+    }
+
+    &__test {
+        background-color: red;
     }
 }
 </style>

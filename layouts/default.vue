@@ -5,7 +5,7 @@
 <template>
     <div>
         <header>
-            <!-- <Header /> -->
+            <Header />
         </header>
 
         <main>

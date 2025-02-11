@@ -80,6 +80,10 @@ onBeforeRouteLeave((to, from, next) => {
         next(false)
     }
 })
+
+definePageMeta({
+    layout: 'small'
+});
 </script>
 
 

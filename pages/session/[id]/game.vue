@@ -26,6 +26,10 @@ onMounted(() => {
         console.log('xqshjq')
     })
 })
+
+definePageMeta({
+    layout: 'small'
+});
 </script>
 
 

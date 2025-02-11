@@ -13,6 +13,7 @@ const select = ref(0)
         </div>
         <div class="authenticate__form">
             <RegisterForm v-if="select === 0" />
+            <LoginForm v-if="select === 1" />
         </div>
     </div>
 </template>
